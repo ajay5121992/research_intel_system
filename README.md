@@ -210,6 +210,7 @@ research_intel_system/
 ## 4. How each layer works
 
 ### External Signal Processor → Trending Topics Store
+
 `data/generate_sample_data.py` produces `external_signals.json`: 8 topics
 across 7 categories (POLICY, HEALTH_TECH, MANUFACTURING, LOGISTICS,
 FINANCE, ENERGY, RETAIL), each with a momentum score and an 8-week
