@@ -1,0 +1,28 @@
+# Core (required -- everything below this line runs the system in full
+# offline fallback mode: hashing embedder, regex NER, mock LLM)
+pandas>=2.0
+numpy>=1.24,<2.0
+networkx>=3.0
+faiss-cpu>=1.7.4
+scikit-learn>=1.3
+requests>=2.31
+python-dotenv>=1.0
+
+# Agent orchestration
+langgraph>=0.1.0
+
+# UI
+streamlit>=1.32
+
+# Testing
+pytest>=7.4
+
+# --- Optional, higher-quality backends -----------------------------------
+# Uncomment to enable real semantic embeddings instead of the hashing
+# fallback. Pulls in torch (~1-2GB) and requires internet on first run to
+# download model weights.
+# sentence-transformers>=2.5
+
+# Uncomment for spaCy-based NER instead of the regex fallback. After
+# installing, also run: python -m spacy download en_core_web_lg
+# spacy>=3.7
