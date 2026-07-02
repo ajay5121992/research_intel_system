@@ -228,8 +228,6 @@ vectors (cosine similarity via inner product). The embedder resolves in
 this order:
 1. `SentenceTransformerEmbedder` (`all-MiniLM-L6-v2`) if installed and
    loadable.
-2. `HashingEmbedder` (scikit-learn `HashingVectorizer` + `TruncatedSVD`,
-   fit once on the corpus at build time) if (1) fails for any reason.
 
 ### Knowledge Graph
 `src/knowledge_graph.py` builds a `networkx.DiGraph` with `Category`,
