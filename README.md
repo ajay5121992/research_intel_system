@@ -82,75 +82,76 @@ why.
 
 ```
                      ┌─────────────────────────────────────────┐
-                     │              Data Sources                │
-                     │  A) External News & Events (GDELT,        │
-                     │     Common Crawl News / CC-News)          │
-                     │  B) Search Interest (Google Trends /       │
-                     │     pytrends)                              │
-                     │  D) Internal Library (HuffPost News        │
-                     │     Dataset or your own corpus)            │
-                     └──────────────┬────────────────────────────┘
+                     │              Data Sources               │
+                     │  A) Internal Library (HuffPost News,    │
+                     │     Dataset or your own corpus)         │
+                     │  B) Search Interest (Google Trends /    │
+                     │     pytrends)                           │
+                     │                                         │
+                     │                                         │
+                     └──────────────┬──────────────────────────┘
                                     │ ingest + chunk + embed
                                     ▼
         ┌───────────────────────────────────────────────────────┐
-        │                      Processing                        │
-        │  External Signal Processor: NER + topic clustering      │
-        │    → momentum store + external signal → Trending        │
-        │      Topics Store                                       │
-        │  Internal Library Indexer: chunk + embed                │
-        │    (sentence-transformers, hashing fallback)             │
-        │    → FAISS Vector Store                                 │
-        │  Knowledge Graph builder: NetworkX (Neo4j-compatible     │
-        │    design) — Nodes: Topic (IPTC-style), Entity, Article  │
-        │    Edges: sub_topic_of, related_to, covered_by, mentions │
-        └──────────────┬───────────────────────┬──────────────────┘
-                        ▼                       ▼
+        │                      Processing                       │
+        │  External Signal Processor: NER                       │
+        │    → momentum store + external signal → Trending      │
+        │      Topics Store                                     │ 
+        │                                                       │
+        │  Internal Library Indexer: chunk + embed              │
+        │    (sentence-transformers)  → FAISS Vector Store      │
+        │                                                       │
+        │  Knowledge Graph builder: NetworkX (Neo4j-compatible  │
+        │    design) — Nodes: Topic, Entity, Article            │
+        │ Edges: sub_topic_of, related_to, covered_by, mentions │
+        └──────────────┬──────────────────────┬────────────────-┘
+                       ▼                      ▼
               ┌───────────────┐       ┌────────────────────┐
-              │  RAG Corpus    │       │  Graph Store        │
-              │  (FAISS)       │       │  (NetworkX)         │
-              └───────┬───────┘       └──────────┬──────────┘
-                      │                           │
-                      └──────────────┬────────────┘
+              │  RAG Corpus   │       │  Graph Store       │
+              │  (FAISS)      │       │  (NetworkX)        │
+              └───────┬───────┘       └──────────┬─────────┘
+                      │                          │
+                      └──────────────┬───────────┘
                                      ▼
-                     ┌───────────────────────────────┐
-                     │   Agent (LangGraph)             │
+                     ┌───────────────────────────────---┐
+                     │   Agent (LangGraph)              │
                      │                                  │
-                     │  State: query, intent, trends[],  │
-                     │  retrieved_docs[], gap_scores{}   │
+                     │  State: query, intent, trends[], │
+                     │  retrieved_docs[], gap_scores{}  │
                      │                                  │
-                     │  ⓪ Intent Classifier              │
-                     │     — first node, always runs     │
-                     │     classifies query →             │
-                     │     {TREND | ENTITY_RAG_KG |       │
-                     │      GAP | HYBRID}                 │
-                     │     → sets state.route             │
+                     │  ⓪ Intent Classifier            │
+                     │     — first node, always runs    │
+                     │     classifies query →           │
+                     │     {TREND | ENTITY_RAG_KG |     │
+                     │      GAP | HYBRID}               │
+                     │     → sets state.route           │
                      │                                  │
-                     │  ① Trend Detector                 │
-                     │     topic velocity scoring         │
-                     │  ② RAG Retriever → ③ KG Query      │
-                     │     entity/topic nodes →            │
-                     │     grounded retrieval              │
-                     │     multi-hop traversal →           │
-                     │     structured gap reasoning        │
-                     │  ④ Gap Analyser                    │
-                     │     momentum vs. coverage delta      │
-                     │  ⑤ Synthesiser                     │
-                     │     structured output + citations    │
-                     │     Guardrail: every citation        │
-                     │     grounded in retrieved_docs[]     │
-                     │                                  │
-                     │  ①→②→③ combined for GAP/HYBRID      │
-                     │  all routes converge → final_answer  │
-                     └───────────────┬─────────────────┘
+                     │  ① Trend Detector                │
+                     │     topic velocity scoring        │
+                     │  ② RAG Retriever → ③ KG Query    │
+                     │     entity/topic nodes →          │
+                     │     grounded retrieval            │
+                     │     multi-hop traversal →         │
+                     │     structured gap reasoning      │
+                     │  ④ Gap Analyser                  │
+                     │     momentum vs. coverage delta   │
+                     │  ⑤ Synthesiser                    │
+                     │     structured output + citations  │
+                     │     Guardrail: every citation      │
+                     │     grounded in retrieved_docs[]   │
+                     │                                    │
+                     │  ①→②→③ combined for GAP/HYBRID   │
+                     │  all routes converge → final_answer│
+                     └───────────────┬───────────────---──┘
                                      │ via Ollama (local) or mock fallback
                                      ▼
                      ┌───────────────────────────────┐
-                     │           Demo Output            │
-                     │  Q&A with Citations               │
-                     │  Topic Insights                   │
-                     │  Gap Identification                │
-                     │  Orchestration Trace                │
-                     │  (Route taken + node sequence)      │
+                     │           Demo Output         │
+                     │  Q&A with Citations           │
+                     │  Topic Insights               │
+                     │  Gap Identification           │
+                     │  Orchestration Trace          │
+                     │  (Route taken + node sequence)│
                      └───────────────────────────────┘
 ```
 
