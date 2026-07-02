@@ -13,26 +13,27 @@ well is our existing library covering them?"*
 
 ## 1. Quickstart (5 minutes, fully offline)
 
-# 1. Clone / unzip, then cd into the project root
+### 1. Clone / unzip, then cd into the project root
 cd research_intel_system
 
-# 2. Create a virtual environment (recommended)
+### 2. Create a virtual environment (recommended)
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 
-# 3. Install dependencies
+### 3. Install dependencies
 pip install -r requirements.txt
 
 pip install sentence-transformers spacy pytrends
 python -m spacy download en_core_web_lg
 rm -rf data/index   # force a rebuild with the new backends
 
-# Download News_Category_Dataset_v3.json from Kaggle (free account
-#    needed): https://www.kaggle.com/datasets/rmisra/news-category-dataset
+Download News_Category_Dataset_v3.json from Kaggle (free account
+needed): https://www.kaggle.com/datasets/rmisra/news-category-dataset
 
-# Filter it down to the project's topic taxonomy (data/topics.py) --
-#    this is an exact category match, not fuzzy keyword matching, so it
-#    can't silently drop everything the way a mismatched taxonomy would.
+Filter it down to the project's topic taxonomy (data/topics.py) --
+this is an exact category match, not fuzzy keyword matching, so it
+can't silently drop everything the way a mismatched taxonomy would.
+
 python data/load_huffpost_by_category.py \
     --input data/News_Category_Dataset_v3.json \
     --out data/internal_library.csv \
@@ -40,20 +41,20 @@ python data/load_huffpost_by_category.py \
 
 python data/refresh_external_signals.py
 
-# Install Ollama: https://ollama.com
+### Install Ollama: https://ollama.com
 ollama serve
 ollama pull qwen2.5:7b-instruct     # or any model you prefer, then set OLLAMA_MODEL
 
 rm -rf data/index
 python -m src.bootstrap        # rebuilds FAISS index + KG, will take a few min at 5000 articles
 
-# 4. Generate synthetic sample data (internal library + external signals)
-# python data/generate_sample_data.py
+### 4. Generate synthetic sample data (internal library + external signals)
+python data/generate_sample_data.py
 
-# 5. Run the smoke test to confirm everything works end-to-end
+### 5. Run the smoke test to confirm everything works end-to-end
 python smoke_test.py
 
-# 6. Launch the app
+### 6. Launch the app
 python -m streamlit run app/app.py
 
 That's it. **No API keys, no internet connection, and no local LLM are
