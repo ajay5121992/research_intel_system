@@ -25,7 +25,9 @@ source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
 pip install sentence-transformers spacy pytrends
+
 python -m spacy download en_core_web_lg
+
 rm -rf data/index   # force a rebuild with the new backends
 
 Download News_Category_Dataset_v3.json from Kaggle (free account
@@ -44,9 +46,11 @@ python data/refresh_external_signals.py
 
 ### Install Ollama: https://ollama.com
 ollama serve
+
 ollama pull qwen2.5:7b-instruct     # or any model you prefer, then set OLLAMA_MODEL
 
 rm -rf data/index
+
 python -m src.bootstrap        # rebuilds FAISS index + KG, will take a few min at 5000 articles
 
 ### 4. Generate synthetic sample data (internal library + external signals)
