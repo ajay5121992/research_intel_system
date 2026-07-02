@@ -18,6 +18,7 @@ cd research_intel_system
 
 ### 2. Create a virtual environment (recommended)
 python3 -m venv .venv
+
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 
 ### 3. Install dependencies
