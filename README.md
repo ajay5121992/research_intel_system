@@ -239,10 +239,7 @@ depth-limited BFS from a topic node to compute a structural coverage
 count — this feeds the gap analyser.
 
 ### Agent (LangGraph)
-`src/agent_graph.py` wires the five tools into the state machine above. If
-`langgraph` isn't installed, it automatically falls back to a small
-dependency-free `FallbackAgent` runner that executes the *exact same*
-routing logic — so the agent still works in a minimal environment.
+`src/agent_graph.py` wires the five tools into the state machine above.
 
 ### Gap Analyser
 `src/tools/gap_analyser.py` combines momentum, KG structural density, and
